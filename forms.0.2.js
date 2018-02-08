@@ -113,8 +113,8 @@ var Input = function(input_element_id)
   function standardizeAcceptedFileExtensionsArray(extensions_array)
   {
     
-    console.log("standardizeAcceptFiledExtensionsArray received:");
-    console.log(extensions_array);
+    //console.log("standardizeAcceptFiledExtensionsArray received:");
+    //console.log(extensions_array);
       
     //First, ensure that we strip out all leading "." in case the dev lists the extensions with preceeding dots. (i.e.: .txt, .xlsx, .ppt)
     var standardized_array = [];
@@ -190,7 +190,7 @@ var Input = function(input_element_id)
         extension_string = extension_string_pieces[extension_string_pieces.length - 1];
       }
     
-      console.log('The standardized extension string is: ' + extension_string);  
+      //console.log('The standardized extension string is: ' + extension_string);  
     
       
       //Cycle through our accepted extensions and see if we have a match.
@@ -328,7 +328,7 @@ var Input = function(input_element_id)
     var valid = false;
     
       
-    var type = this.type.toString().trim().toLowerCase();
+    //var type = this.type.toString().trim().toLowerCase();
     var tagname = this.getTagName().toString().trim().toLowerCase();
       
       
@@ -379,7 +379,7 @@ var Input = function(input_element_id)
     }
       
       
-    if (tagname === "input" && type === "text")
+    if (tagname === "input" && this.getType() === "text")
     {
       if (this.isRequired() === true)
       {
@@ -401,7 +401,7 @@ var Input = function(input_element_id)
     }
       
       
-    if (tagname === "input" && type === "email")
+    if (tagname === "input" && this.getType() === "email")
     {
       if (this.isRequired() === true)
       {
@@ -449,7 +449,7 @@ var Input = function(input_element_id)
       
       
       
-    if (tagname === "input" && type === "file")
+    if (tagname === "input" && this.getType() === "file")
     {  
         
       if (this.isRequired() === true)
@@ -539,7 +539,7 @@ var Input = function(input_element_id)
     }
       
       
-    if (tagname === "input" && (type === "checkbox" || type === "radio"))
+    if (tagname === "input" && (this.getType() === "checkbox" || this.getType() === "radio"))
     {
       if (this.isRequired() === true)
       {
@@ -692,7 +692,7 @@ var Form = function(form_element_id)
     }
       
       
-    console.log(html_collection);  
+    //console.log(html_collection);  
       
     //Next, let's get our excluded elements (if there are any).
     var excluded_input_element_ids = this.getExcludedInputElements();
@@ -755,7 +755,7 @@ var Form = function(form_element_id)
       
     //Note: This only harvests the elements we have left unexcluded.
     var input_elements = this.getFieldsAsInputElements();
-    console.log(input_elements);
+    //console.log(input_elements);
     
     for (var i = 0; i < input_elements.length; i++)
     {
@@ -803,7 +803,7 @@ var Form = function(form_element_id)
       
   }
   
-  
+  /*
   this.getSuggestedCharset = function getSuggestedCharset()
   {
       
@@ -822,7 +822,7 @@ var Form = function(form_element_id)
     return suggested_charset;
       
   }
-  
+  */
   
   this.getSuggestedRequestHeaderName = function getSuggestedRequestHeaderName()
   {
@@ -831,7 +831,7 @@ var Form = function(form_element_id)
   
   this.getSuggestedRequestHeaderBody = function getSuggestedRequestHeaderBody()
   {
-    return this.getSuggestedMIMEType()+'; charset='+this.getSuggestedCharset();  
+    return this.getSuggestedMIMEType();  
   }
   
   
@@ -853,156 +853,27 @@ var Form = function(form_element_id)
     return valid;      
   }
   
-  
+  //Returns an array of all invalid Input objects
   this.getInvalidInputs = function getInvalidInputs()
   {
+    var invalid_inputs = [];        
     var inputs = this.getFieldsAsInputElements();
       
-      
-      
+
     for (var i = 0; i < inputs.length; i++)
     {
       if (inputs[i].isValid() === false)
       {
-        
+        invalid_inputs.push(inputs[i]);  
       }
     }
       
+    return invalid_inputs;
   }
 
   
     
 }//end: Form class
-
-console.log("Hello from forms.js");
-
-var body = document.body;
-
-var important_form = new Form("important-form");
-var file_input = new Input("file");
-
-var submit_button = document.getElementById("submit-button");
-submit_button.addEventListener("click", function(event)
-{
-  event.preventDefault();
-  
-  /*
-  console.log(file_input.getFiles());
-  console.log(file_input.getStandardizedFileExtensionsFromAttachedFiles());
-  console.log("--------");
-  console.log(file_input.getAcceptedFileExtensionsFromDataAttribute());
-  */
-    
-  var form = new Form("important-form");
-    
-  //Now, we're going to exclude "phone" from the list of elements we want to scoop up as "Input" elements
-  form.setExcludedInputElements(["phone"]);
-    
-  var form_input_elements = form.getFieldsAsInputElements();    
-    
-  console.log(form);
-  console.log("--------");
-  console.log(form_input_elements);
-    
-  console.log("-------- Serializing Form --------");
-  var form_data = form.serialize();
-  console.log(form_data);
-  console.log("-------- END Serializing Form --------");
-  //var input = new Input("address");
-  //console.log(input.serialize());
-    
-    
-  //Testing: Getting all fields as an HTML collection
-  //var html_collections = form.getAllFieldsAsHTMLCollection();
-    
-    
-  console.log("-------- Suggested Header Information --------");  
-  console.log(form.getSuggestedRequestHeaderName());
-  console.log(form.getSuggestedRequestHeaderBody());
-  console.log("-------- END Suggested Header Information --------");    
-    
-    
-    
-  console.log("--------- Checkbox and Radio Test ----------");
-  var checkbox = new Input("opt-in-checkbox-yes");
-  console.log("Is the checkbox checked? " + checkbox.isChecked());
-  console.log("Is the checkbox a part of a checkbox group? " + checkbox.isCheckboxGroup());
-    
-
-  var checkboxes = document.getElementsByName(checkbox.getName());
-  console.log(checkboxes);    
-    
-  for (var k = 0; k < checkboxes.length; k++)
-  {
-    console.log(checkboxes[k].value.toString().trim().toLowerCase());
-  }
-    
-    
-    
-  var radio = new Input("opt-in-radio-fm");
-  console.log("Is this radio button checked? " + radio.isChecked());
-  console.log("Is the radio a part of a radio group? " + checkbox.isCheckboxGroup());
-    
-  var radios = document.getElementsByName(radio.getName());
-  console.log(radios);
-    
-    
-  for (var j = 0; j < radios.length; j++)
-  {
-    console.log(radios[j].value.toString().trim().toLowerCase());
-  }
-    
-  console.log("--------- END Checkbox and Radio Test ----------");
-  
-
-    
-  console.log("-------- TextArea Test --------");  
-  var textarea = new Input("description");
-  console.log(textarea.getValue());
-  console.log("-------- END TextArea Test --------");       
-    
-    
-  console.log("-------- getElementsByTagName Test --------");  
-  var inputs = document.getElementsByTagName("input");
-  console.log(inputs);
-    
-  var selects = document.getElementsByTagName("select");
-  console.log(selects);
-    
-    
-  var textareas = document.getElementsByTagName("textarea");
-  console.log(textareas);    
-    
-  console.log("-------- END getElementsByTagName Test --------");      
-    
-    
-  //Send the serialized form data to the backend.
-  
-  var request = new XMLHttpRequest();
-  console.log(request);
-  request.open('POST', 'tests/submit/', true);
-  //request.setRequestHeader(form.getSuggestedRequestHeaderName(), form.getSuggestedRequestHeaderBody());
-    
-  
-    
-  request.onload = function()
-  {
-    console.log(request.response);
-  }
-  
-  request.onerror = function()
-  {
-    console.log("Something bad happened");
-  }
-    
-  request.send(form_data);
-    
-    
-  console.log(request);
-  
-    
-  
-});
 
 
 

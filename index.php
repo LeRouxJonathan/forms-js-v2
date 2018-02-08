@@ -2,7 +2,7 @@
 <html>
    <head></head>
     <body>
-        <form id = "important-form" name = "important-form" >
+        <form id = "important-form" name = "important-form" enctype = "application/x-www-form-urlencoded">
           <input type = "text" id = "address" name = "address" required = true placeholder = "address"/>
             <br>
           <input type = "text" id = "phone" name = "phone" required = "true" placeholder = "phone"/>
@@ -30,5 +30,6 @@
         </form>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src = "forms.0.2.js"></script>
+        <script src = "script.js"></script>
     </body>
 </html>
