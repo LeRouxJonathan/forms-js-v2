@@ -345,8 +345,8 @@ var Input = function(input_element_id)
         else
         {
           valid = false;
-          this.setErrorMessage("");
-          this.setUserFriendlyErrorMessage("");
+          this.setErrorMessage("No value provided for textarea element of ID: `" + this.getId()+"`");
+          this.setUserFriendlyErrorMessage("Please complete this field.");
         }
       }
       else
@@ -370,7 +370,7 @@ var Input = function(input_element_id)
         else
         {
           valid = false;
-          this.setErrorMessage("No value provided for select element " + this.getId());
+          this.setErrorMessage("No value provided for select element of ID: `" + this.getId()+"`");
           this.setUserFriendlyErrorMessage("Please select an option.");
         }
       }
@@ -392,7 +392,7 @@ var Input = function(input_element_id)
         else
         {
           valid = false;
-          this.setErrorMessage("No value provided for input element " + this.getId());
+          this.setErrorMessage("No value provided for input element of ID: `" + this.getId()+ "`");
           this.setUserFriendlyErrorMessage("Please complete this field.");
         }
       }
@@ -416,14 +416,14 @@ var Input = function(input_element_id)
           else
           {
             valid = false;
-            this.setErrorMessage("No value provided for input element " + this.getId());
+            this.setErrorMessage("No value provided for input element of ID: `" + this.getId() + "`");
             this.setUserFriendlyErrorMessage("Please complete this field with a valid email address.");
           }
         }
         else
         {
           valid = false;
-          this.setErrorMessage("No value provided for input element " + this.getId());
+          this.setErrorMessage("No value provided for input element of ID: `" + this.getId() + "`");
           this.setUserFriendlyErrorMessage("Please complete this field with a valid email address.");
         }
       }
@@ -438,7 +438,7 @@ var Input = function(input_element_id)
           else
           {
             valid = false;
-            this.setErrorMessage("No value provided for input element " + this.getId());
+            this.setErrorMessage("No value provided for input element of ID: `" + this.getId()+ "`");
             this.setUserFriendlyErrorMessage("Please complete this field with a valid email address.");
           }
         }
@@ -473,7 +473,7 @@ var Input = function(input_element_id)
                if (is_accepted_extension === false)
                {
                  valid = false; 
-                 this.setErrorMessage("Incorrect file extension for file input " + this.getId());
+                 this.setErrorMessage("Incorrect file extension for file input of ID: `" + this.getId()+ "`");
                  this.setUserFriendlyErrorMessage("Please only submit documents of the following types: " + this.getUserFriendlyAcceptedFileExtensionsList());
                }
                else
@@ -493,7 +493,7 @@ var Input = function(input_element_id)
          else
          {
            valid = false; //If it's required, but there's no files attached, then it's not valid.
-           this.setErrorMessage("No files attached for file input " + this.getId());
+           this.setErrorMessage("No files attached for file input of ID: `" + this.getId() + "`");
            this.setUserFriendlyErrorMessage("Please attach and upload the requested files.");
          }
       }
@@ -516,7 +516,7 @@ var Input = function(input_element_id)
               if (is_accepted_extension === false)
               {
                 valid = false; 
-                this.setErrorMessage("No files attached for file input " + this.getId());
+                this.setErrorMessage("No files attached for file input of ID: `" + this.getId() + "`");
                 this.setUserFriendlyErrorMessage("Please attach and upload the requested files.");
               }
               else
@@ -561,7 +561,7 @@ var Input = function(input_element_id)
             else if (i >= group_elements.length && valid !== true)
             {
               valid = false; 
-              this.setErrorMessage("No value chosen chosen for checkbox/radio group " + this.getId());
+              this.setErrorMessage("No value chosen chosen for checkbox/radio group of name: `" + this.getName() + "` and ID of: `" + this.getId() + "`");
               this.setUserFriendlyErrorMessage("Please complete this selection.");    
             }
           }
@@ -575,7 +575,7 @@ var Input = function(input_element_id)
           else
           {
             valid = false; 
-            this.setErrorMessage("No value chosen chosen for checkbox/radio group " + this.getId());
+            this.setErrorMessage("No value chosen chosen for checkbox/radio element of ID: `" + this.getId()+ "`");
             this.setUserFriendlyErrorMessage("Please complete this selection.");       
           }
         }
