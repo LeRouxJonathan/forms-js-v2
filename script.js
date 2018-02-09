@@ -27,6 +27,9 @@ submit_button.addEventListener("click", function(event)
   else
   {
     console.log("INVALID");
+    console.log("---- Invalid Inputs -----");
+      
+    console.log(form.getInvalidInputs())
   }
     
   /*

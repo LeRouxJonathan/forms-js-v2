@@ -240,6 +240,8 @@ var Input = function(input_element_id)
         extensions_list_string = extensions_list_string + ", " + accepted_extensions[i].toUpperCase();
       }
     }
+      
+    return extensions_list_string;  
   }
   
   
@@ -545,16 +547,18 @@ var Input = function(input_element_id)
       {
         if (this.isCheckboxGroup() === true)
         {
+          console.log("GROUP DETECTED: " + this.getName() + " for element of id " + this.getId());
           //Get each of the checkboxes with this name, if even a single one is checked -- given it's a group -- it's valid.
           var group_elements = document.getElementsByName(this.getName());
-        
+            
+          //Note: We need to check if ALL have been checked -- DONE!
           for (var i = 0; i < group_elements.length; i++)
           {
-            if (group_elements[i].checked === true)
+            if (group_elements[i].checked)
             {
               valid = true;
             }
-            else
+            else if (i >= group_elements.length && valid !== true)
             {
               valid = false; 
               this.setErrorMessage("No value chosen chosen for checkbox/radio group " + this.getId());
@@ -578,8 +582,8 @@ var Input = function(input_element_id)
       }
     }
       
-      
-      
+  console.log("Tag of id " + this.getId() + "'s validity is " + valid);   
+  return valid;    
     
   }//end: isValid() method
   
