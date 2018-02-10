@@ -5,11 +5,17 @@
         <form id = "important-form" name = "important-form" enctype = "application/x-www-form-urlencoded">
           <input type = "text" id = "address" name = "address" required = true placeholder = "address"/>
             <br>
-          <input type = "text" id = "phone" name = "phone" required = "true" placeholder = "phone"/>
+          <input type = "tel" id = "phone" name = "phone" required = "true" placeholder = "phone"/>
             <br>
-          Yes<input type = "checkbox" id = "opt-in-checkbox-yes" name = "opt-in-checkbox" required = "true" />
+          Knight<input type = "checkbox" id = "title-knight" name = "title-checkbox" value = "knight" required = "true" />
             <br>
-          No<input type = "checkbox" id = "opt-in-checkbox-no" name = "opt-in-checkbox" required = "true" />
+          Lord<input type = "checkbox" id = "title-lord" name = "title-checkbox" value = "lord" required = "true" />
+            <br>
+          King<input type = "checkbox" id = "title-king" name = "title-checkbox" value = "king" required = "true" />
+            <br>
+          Queen<input type = "checkbox" id = "title-queen" name = "title-checkbox" value = "queen" required = "true" />
+            <br>
+          Jester<input type = "checkbox" id = "title-jester" name = "title-checkbox" value = "jester" required = "true" />
             <br>
           FM<input type = "radio" id = "opt-in-radio-fm" name = "opt-in-radio"  value = "fm" required = "true" />
             <br>
@@ -29,7 +35,7 @@
             <br>
         </form>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src = "forms.0.2.js"></script>
+        <script src = "forms.js"></script>
         <script src = "script.js"></script>
     </body>
 </html>

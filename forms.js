@@ -405,6 +405,29 @@ var Input = function(input_element_id)
     }
       
       
+    if (tagname === "input" && this.getType() === "tel")
+    {
+      if (this.isRequired() === true)
+      {
+        if (this.getValue())
+        {
+          valid = true;
+        }
+        else
+        {
+          valid = false;
+          this.setErrorMessage("No value provided for input element of ID: `" + this.getId()+ "`");
+          this.setUserFriendlyErrorMessage("Please complete this field.");
+        }
+      }
+      else
+      {
+        valid = true;
+      }  
+    }
+      
+      
+      
     if (tagname === "input" && this.getType() === "email")
     {
       if (this.isRequired() === true)
@@ -591,12 +614,50 @@ var Input = function(input_element_id)
   
   
   
-  
+  /*
   this.serialize = function serialize()
   {
-    return encodeURIComponent(this.getName())+"="+encodeURIComponent(this.getValue());   
+      
+    var serialize = true;  
+      
+    var serialized_string = "";  
+      
+    var tagname = this.getTagName();
+        
+    //Like jQuery, we only want to serialize checkboxes and radio inputs that have a name. 
+    if (this.element.hasAttribute("name") === true)
+    {
+      //For checkboxes and radios, we only serialize those that have been checked
+      if (tagname === "input" && this.getType() === "checkbox" || this.getType() === "radio")
+      {
+        if (this.isChecked() === false)
+        {
+          serialize = false;
+        }
+      }
+        
+      //We do not serialize files.
+      if (this.getType() === "file")
+      {
+        serialize = false;
+      }
+    }
+    else
+    {
+      serialize = false;
+    }
+        
+     
+    if (serialize === true)
+    {
+      serialized_string = encodeURIComponent(this.getName())+"="+encodeURIComponent(this.getValue());  
+    }
+      
+    
+    return serialized_string;
+      
   }
-  
+  */
 }//end: Input class
 
 
@@ -753,7 +814,7 @@ var Form = function(form_element_id)
     return has_file_input;
   }
   
-  
+  /*
   this.serialize = function serialize()
   {
     
@@ -764,7 +825,7 @@ var Form = function(form_element_id)
     //console.log(input_elements);
     
     for (var i = 0; i < input_elements.length; i++)
-    {
+    {   
       if (serialized_string === '')
       {
         serialized_string = serialized_string + input_elements[i].serialize();
@@ -777,6 +838,8 @@ var Form = function(form_element_id)
       
     return serialized_string;
   }
+  */  
+  
   
   //Returns the suggested Content-Type for this form
   this.getSuggestedMIMEType = function getSuggestedMIMEType()
