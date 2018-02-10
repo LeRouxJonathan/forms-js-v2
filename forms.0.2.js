@@ -1,5 +1,7 @@
 var Input = function(input_element_id)
 {
+    
+  //Core properties
   this.element = document.getElementById(input_element_id);
   this.type = this.element.getAttribute("type");
   this.name = this.element.getAttribute("name");
@@ -12,7 +14,7 @@ var Input = function(input_element_id)
   //Non-traditional properties
   this.accepted_file_extensions = this.element.getAttribute("data-accepted-file-extensions");
     
-    
+  //Error messages  
   this.error_message = "";    
   this.user_friendly_error_message = "";
     
@@ -330,7 +332,7 @@ var Input = function(input_element_id)
     var valid = false;
     
       
-    //var type = this.type.toString().trim().toLowerCase();
+    //We can store tagname into a variable and use it reliably, as all HTML tags have a tagname. The "type" attribute, however, might not be inherit to every tag, so it's best to look that up as needed depending upon the tagname.
     var tagname = this.getTagName().toString().trim().toLowerCase();
       
       
@@ -547,7 +549,7 @@ var Input = function(input_element_id)
       {
         if (this.isCheckboxGroup() === true)
         {
-          console.log("GROUP DETECTED: " + this.getName() + " for element of id " + this.getId());
+          //console.log("GROUP DETECTED: " + this.getName() + " for element of id " + this.getId());
           //Get each of the checkboxes with this name, if even a single one is checked -- given it's a group -- it's valid.
           var group_elements = document.getElementsByName(this.getName());
             
@@ -582,7 +584,7 @@ var Input = function(input_element_id)
       }
     }
       
-  console.log("Tag of id " + this.getId() + "'s validity is " + valid);   
+  //console.log("Tag of id " + this.getId() + "'s validity is " + valid);   
   return valid;    
     
   }//end: isValid() method
