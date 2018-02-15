@@ -12,11 +12,15 @@ submit_button.addEventListener("click", function(event)
   
   event.preventDefault();    
     
+    
+  //Testing how "file" inputs are being parsed for validity:
+  var file = new Input("file");
+  console.log(file.getUserFriendlyAcceptedFileExtensionsList());
+    
+    
+    
   //Send the serialized form data to the backend.
-  
-  var form_data = form.serialize();   
-     
-  console.log(form_data);
+
     
     
     
@@ -27,9 +31,18 @@ submit_button.addEventListener("click", function(event)
   else
   {
     console.log("INVALID");
-    console.log("---- Invalid Inputs -----");
+    
+    
+    var invalid_inputs = form.getInvalidInputs();  
       
+    console.log("---- Invalid Inputs -----");  
     console.log(form.getInvalidInputs())
+    
+      
+    for (var i = 0; i < invalid_inputs.length; i++)
+    {
+      console.log(invalid_inputs[i].getErrorMessage());
+    }
   }
     
   /*

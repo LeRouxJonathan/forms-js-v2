@@ -198,18 +198,30 @@ var Input = function(input_element_id)
       //Cycle through our accepted extensions and see if we have a match.
       for (var i = 0; i < accepted_file_extensions.length; i++)
       {
+        console.log("We are comparing " + extension_string.toString() + " to " + accepted_file_extensions[i].toString().trim().toLowerCase());  
+          
         if (extension_string.toString() === accepted_file_extensions[i].toString().trim().toLowerCase())
         {
+          console.log("Match found!");
           is_accepted = true;
+            
+          
+          //For our use later on, we need to break early here and immediately return the "true" value.
+          /*
+           For instance, in the case of our accepted extensions being [txt, pdf, html], if we upload an [html] file, it will flag as false for not matching with [txt] or [pdf]         
+          */
+          break;    
+            
         }
       }     
     }
+    //If we don't declare desired file types, anything goes, and therefore all file extensions are accepted.
     else
     {
       is_accepted = true;
     }
       
-      
+    console.log("Is accepted? " + is_accepted);  
     return is_accepted;
       
   }
@@ -441,8 +453,8 @@ var Input = function(input_element_id)
           else
           {
             valid = false;
-            this.setErrorMessage("No value provided for input element of ID: `" + this.getId() + "`");
-            this.setUserFriendlyErrorMessage("Please complete this field with a valid email address.");
+            this.setErrorMessage("Incorrect email address format for input element of ID: : `" + this.getId() + "`");
+            this.setUserFriendlyErrorMessage("Please ensure your email address was entered correctly.");
           }
         }
         else
@@ -479,17 +491,23 @@ var Input = function(input_element_id)
     if (tagname === "input" && this.getType() === "file")
     {  
         
+      //With validity as being assumed false, and how we've set up isAcceptedFileExtension to balk on the first encounter with an invalid (false) extension, we need to flip the script a bit here and begin our calculations by first assuming that a file's validity is true.    
+      var file_is_valid = true;    
+        
       if (this.isRequired() === true)
       {
          if (this.getFiles().length > 0)
          {
            //Retrieve our desired file extensions, if any
            var accepted_extensions = this.getAcceptedFileExtensionsFromDataAttribute();
-          
+           console.log("This file input's accepted extensions are: ");
+           console.log(accepted_extensions);
            if (accepted_extensions !== null && accepted_extensions.length > 0)
            {
-             //Harvest the file extension from the given files.
+             //Harvest the file extension from each of the given files.
              var attached_file_extensions = this.getStandardizedFileExtensionsFromAttachedFiles();
+             console.log("The file extensions that were detected as attached were: ");
+             console.log(attached_file_extensions);
                
              for (var i = 0; i < attached_file_extensions.length; i++)
              {
@@ -497,72 +515,83 @@ var Input = function(input_element_id)
                  
                if (is_accepted_extension === false)
                {
-                 valid = false; 
+                 file_is_valid = false; 
                  this.setErrorMessage("Incorrect file extension for file input of ID: `" + this.getId()+ "`");
                  this.setUserFriendlyErrorMessage("Please only submit documents of the following types: " + this.getUserFriendlyAcceptedFileExtensionsList());
-               }
-               else
-               {
-                 if (i >= attached_file_extensions.length && is_accepted_extension === true)
-                 {
-                   valid = true;
-                 }
+                   
+                 //Breaking here allows us to stop parsing the rest of the files, as just one being invalid invalidates the entire Input.
+                 break;
                }
              }
            }
+           //If it's required, but we don't have any pre-set accepted file extensions, yet the user did attach files, then anything goes and it's valid.
            else
            {
-             valid = true; //If it's required, but we don't have any pre-set accepted file extensions, yet the user did attach files, then anything goes and it's valid.
+             file_is_valid = true; 
            }
          }
+         //If it's required, but there's no files attached, then it's not valid.
          else
          {
-           valid = false; //If it's required, but there's no files attached, then it's not valid.
+           file_is_valid = false; 
            this.setErrorMessage("No files attached for file input of ID: `" + this.getId() + "`");
            this.setUserFriendlyErrorMessage("Please attach and upload the requested files.");
          }
       }
+      //If the file field is not required ...
       else
       {
         if (this.getFiles().length > 0)
         {
-          //Retrieve our desired file extensions, if any
-          var accepted_extensions = this.getAcceptedFileExtensionsFromDataAttribute();
-         
-          if (accepted_extensions !== null && accepted_extensions.length > 0)
-          {
-            //Harvest the file extension from the given files.
-            var attached_file_extensions = this.getStandardizedFileExtensionsFromAttachedFiles();
-              
-            for (var i = 0; i < attached_file_extensions.length; i++)
-            {
-              var is_accepted_extension = this.isAcceptedFileExtension(attached_file_extensions[i]);     
-                
-              if (is_accepted_extension === false)
-              {
-                valid = false; 
-                this.setErrorMessage("No files attached for file input of ID: `" + this.getId() + "`");
-                this.setUserFriendlyErrorMessage("Please attach and upload the requested files.");
-              }
-              else
-              {
-                if (i >= attached_file_extensions.length && is_accepted_extension === true)
-                {
-                  valid = true;
-                }
-              }
-            }
-          }
-          else
-          {
-            valid = true; //It's valid if we don't require files and there's no pre-stated accepted file types.
-          }
+           //Retrieve our desired file extensions, if any
+           var accepted_extensions = this.getAcceptedFileExtensionsFromDataAttribute();
+           console.log("This file input's accepted extensions are: ");
+           console.log(accepted_extensions);
+           if (accepted_extensions !== null && accepted_extensions.length > 0)
+           {
+             //Harvest the file extension from each of the given files.
+             var attached_file_extensions = this.getStandardizedFileExtensionsFromAttachedFiles();
+             console.log("The file extensions that were detected as attached were: ");
+             console.log(attached_file_extensions);
+               
+             for (var i = 0; i < attached_file_extensions.length; i++)
+             {
+               var is_accepted_extension = this.isAcceptedFileExtension(attached_file_extensions[i]);     
+                 
+               if (is_accepted_extension === false)
+               {
+                 file_is_valid = false; 
+                 this.setErrorMessage("Incorrect file extension for file input of ID: `" + this.getId()+ "`");
+                 this.setUserFriendlyErrorMessage("Please only submit documents of the following types: " + this.getUserFriendlyAcceptedFileExtensionsList());
+                   
+                 //Breaking here allows us to stop parsing the rest of the files, as just one being invalid invalidates the entire Input.
+                 break;
+               }
+             }
+           }
+           //If it's required, but we don't have any pre-set accepted file extensions, yet the user did attach files, then anything goes and it's valid.
+           else
+           {
+             file_is_valid = true; 
+           }
         }
         else
         {
-          valid = true; //It's valid if we don't require files and there's none attached.
+          file_is_valid = true; //It's valid if we don't require files and there's none attached.
         }
       }
+        
+      if (file_is_valid === true)
+      {
+        valid = true;
+      }
+      else
+      {
+        valid = false;
+      }
+        
+        
+      return valid;
     }
       
       
@@ -576,20 +605,32 @@ var Input = function(input_element_id)
           //Get each of the checkboxes with this name, if even a single one is checked -- given it's a group -- it's valid.
           var group_elements = document.getElementsByName(this.getName());
             
-          //Note: We need to check if ALL have been checked -- DONE!
+          var singular_checkbox_from_checkbox_group_is_checked = false; 
+            
           for (var i = 0; i < group_elements.length; i++)
           {
             if (group_elements[i].checked)
             {
-              valid = true;
+              console.log("Group of type " + this.getType() + " is valid!");
+              singular_checkbox_from_checkbox_group_is_checked = true;
             }
-            else if (i >= group_elements.length && valid !== true)
+            else if (i >= group_elements.length && singular_checkbox_from_checkbox_group_is_checked === false)
             {
-              valid = false; 
-              this.setErrorMessage("No value chosen chosen for checkbox/radio group of name: `" + this.getName() + "` and ID of: `" + this.getId() + "`");
-              this.setUserFriendlyErrorMessage("Please complete this selection.");    
+              singular_checkbox_from_checkbox_group_is_checked = false; 
             }
           }
+            
+          if (singular_checkbox_from_checkbox_group_is_checked === true)
+          {
+            valid = true;
+          }
+          else
+          {
+            valid = false;
+            this.setErrorMessage("No value chosen chosen for checkbox/radio group of name: `" + this.getName() + "` and ID of: `" + this.getId() + "`");
+            this.setUserFriendlyErrorMessage("Please complete this selection.");  
+          }
+            
         }
         else
         {

@@ -7,6 +7,8 @@
             <br>
           <input type = "tel" id = "phone" name = "phone" required = "true" placeholder = "phone"/>
             <br>
+          <input type = "email" id = "email" name = "email" required = "true" placeholder = "email@domain.com"/>
+            <br>
           Knight<input type = "checkbox" id = "title-knight" name = "title-checkbox" value = "knight" required = "true" />
             <br>
           Lord<input type = "checkbox" id = "title-lord" name = "title-checkbox" value = "lord" required = "true" />
@@ -26,6 +28,7 @@
           <textarea id = "description" name = "description" required = "true" maxlength = "50" placeholder = "description"></textarea>
             <br>
           <select id = "state" name = "state" required = "true">
+            <option id = "blank-option" value = "">--Select a state--</option>
             <option id = "nevada" value = "nevada">Nevada</option>
             <option id = "oregon" value = "oregon">Oregon</option>
             <option id = "washington" value = "washington">Washington</option>
