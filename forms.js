@@ -92,17 +92,61 @@ var Input = function(input_element_id)
   {
     var required = false; 
       
-    //If the dev has simply put the word "required" and hasn't assigned a value to the attribute, that's enough for us, as that will -- by default html5 -- trigger the warning.
-    if (this.element.hasAttribute("required"))
+      
+    //Special handling is required for checkboxes and radios, as they are individual elements that can be bound together as a group via the "name" attribute. If one of the checkboxes or radios in the group is required, then the entire set of checkboxes or radios is shares that hard requirement.
+    if (this.getTagName() === "input" && (this.getType() === "checkbox" || this.getType() === "radio"))
     {
-    
-      required = true;
-        
-      //If the attribute exists, but is set to a false value -- via boolean or via string -- ensure we return a false value.
-      if (this.element.getAttribute("required") === "false" || this.element.getAttribute("required") === false)
+      //First, check to see if this checkbox or radio is a part of a group.
+      if (this.isCheckboxGroup() === true)
       {
-        required = false;    
-      }  
+        //If it is a part of a checkbox group, we any member of this checkbox group is required. If it is, then the entire group is required.
+        var checkbox_group_elements = document.getElementsByName(this.getName());
+          
+        for (var i = 0; i < checkbox_group_elements.length; i++)
+        {
+          if (checkbox_group_elements[i].hasAttribute("required"))
+          {
+            required = true;
+          }
+        }
+      }
+      else
+      {
+        if (this.element.hasAttribute("required"))
+        {
+       
+          required = true;
+           
+          //If the attribute exists, but is set to a false value -- via boolean or via string -- ensure we return a false value.
+          if (this.element.getAttribute("required") === "false" || this.element.getAttribute("required") === false)
+          {
+            required = false;    
+          }  
+        }
+        else
+        {
+          required = false;
+        }
+      }
+    }
+    else
+    {
+      //If the dev has simply put the word "required" and hasn't assigned a value to the attribute, that's enough for us, as that will -- by default html5 -- trigger the warning.
+      if (this.element.hasAttribute("required"))
+      {
+       
+        required = true;
+           
+        //If the attribute exists, but is set to a false value -- via boolean or via string -- ensure we return a false value.
+        if (this.element.getAttribute("required") === "false" || this.element.getAttribute("required") === false)
+        {
+          required = false;    
+        }  
+      }
+      else
+      {
+        required = false;
+      }
     }
     
     return required;
@@ -633,7 +677,7 @@ var Input = function(input_element_id)
             
         }
         else
-        {
+        {   
           if (this.isChecked() === true)
           {
             valid = true;   
@@ -645,6 +689,10 @@ var Input = function(input_element_id)
             this.setUserFriendlyErrorMessage("Please complete this selection.");       
           }
         }
+      }
+      else
+      {
+        valid = true;
       }
     }
       

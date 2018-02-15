@@ -9,15 +9,15 @@
             <br>
           <input type = "email" id = "email" name = "email" required = "true" placeholder = "email@domain.com"/>
             <br>
-          Knight<input type = "checkbox" id = "title-knight" name = "title-checkbox" value = "knight" required = "true" />
+          Knight<input type = "checkbox" id = "title-knight" name = "title-checkbox" value = "knight" required = "true"/>
             <br>
-          Lord<input type = "checkbox" id = "title-lord" name = "title-checkbox" value = "lord" required = "true" />
+          Lord<input type = "checkbox" id = "title-lord" name = "title-checkbox" value = "lord"/>
             <br>
-          King<input type = "checkbox" id = "title-king" name = "title-checkbox" value = "king" required = "true" />
+          King<input type = "checkbox" id = "title-king" name = "title-checkbox" value = "king"/>
             <br>
-          Queen<input type = "checkbox" id = "title-queen" name = "title-checkbox" value = "queen" required = "true" />
+          Queen<input type = "checkbox" id = "title-queen" name = "title-checkbox" value = "queen"/>
             <br>
-          Jester<input type = "checkbox" id = "title-jester" name = "title-checkbox" value = "jester" required = "true" />
+          Jester<input type = "checkbox" id = "title-jester" name = "title-checkbox" value = "jester" />
             <br>
           FM<input type = "radio" id = "opt-in-radio-fm" name = "opt-in-radio"  value = "fm" required = "true" />
             <br>
