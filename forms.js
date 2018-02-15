@@ -761,6 +761,8 @@ var Form = function(form_element_id)
     
   this.enctype = this.element.getAttribute("enctype");
   this.charset = this.element.getAttribute("accept-charset");
+    
+  this.hash_id = "#"+this.id;    
   
   //Note: This property allows us to dictate which, if any, input element IDs should be ignored and not parsed as Input element by id. These will be passed in via Javascript to avoid as much front-end visbility as possible that might reveal any level of backend logic to the enduser.
   this.excluded_input_elements = null;
@@ -769,6 +771,22 @@ var Form = function(form_element_id)
   {
     return this.element;  
   };
+    
+  this.getId = function getId()
+  {
+    return this.id;
+  }
+  
+  this.getName = function getName()
+  {
+    return this.name;
+  }
+    
+  
+  this.getHashId = function getHashId()
+  {
+    return this.hash_id;
+  }
     
   this.getEnctype = function getEnctype()
   {
