@@ -25,6 +25,12 @@
             <br>
           <input type = "file" id = "file" name = "file" required = "true" data-accepted-file-extensions = ".txt, .html, .pdf" data-max-file-size = "" multiple/>
             <br>
+          <input type = "number" id = "number" name = "number" required = "true" placeholder = "number"/>
+            <br>
+          <input type = "date" id = "date" name = "date" required = "true"/>
+            <br>
+          <input type = "url" id = "url" name = "url" required = "true" placeholder = "url"/>
+            <br>
           <textarea id = "description" name = "description" required = "true" maxlength = "50" placeholder = "description"></textarea>
             <br>
           <select id = "state" name = "state" required = "true">

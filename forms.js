@@ -461,6 +461,80 @@ var Input = function(input_element_id)
     }
       
       
+      
+    if (tagname === "input" && this.getType() === "url")
+    {
+      if (this.isRequired() === true)
+      {
+        //A user-submitted url, at a minimum, must contain at least a "." for .com, .net, etc.
+        if (this.getValue() && this.getValue().toString().trim().toLowerCase().indexOf(".") !== -1)
+        {
+          valid = true;
+        }
+        else
+        {
+          valid = false;
+          this.setErrorMessage("Missing or incorrect format for value provided for input element of ID: `" + this.getId()+ "`");
+          this.setUserFriendlyErrorMessage("Please provide a valid url.");
+        }
+      }
+      else
+      {
+        valid = true;
+      }  
+    } 
+      
+      
+    if (tagname === "input" && this.getType() === "number")
+    {
+      console.log("Is this a not a number? " + isNaN(this.getValue()));    
+        
+      if (this.isRequired() === true)
+      {
+        //A user-submitted url, at a minimum, must contain at least a "." for .com, .net, etc.
+        if (this.getValue() && (isNaN(this.getValue()) === false))
+        {
+          valid = true;
+        }
+        else
+        {
+          valid = false;
+          this.setErrorMessage("Missing or incorrect format for value provided for input element of ID: `" + this.getId()+ "`");
+          this.setUserFriendlyErrorMessage("Please provide a valid number.");
+        }
+      }
+      else
+      {
+        valid = true;
+      }  
+    }
+      
+      
+      
+    if (tagname === "input" && this.getType() === "date")
+    {
+      if (this.isRequired() === true)
+      {
+        if (this.getValue())
+        {
+          valid = true;
+        }
+        else
+        {
+          valid = false;
+          this.setErrorMessage("No value provided for input element of ID: `" + this.getId()+ "`");
+          this.setUserFriendlyErrorMessage("Please enter a valid date.");
+        }
+      }
+      else
+      {
+        valid = true;
+      }  
+    }  
+      
+      
+      
+      
     if (tagname === "input" && this.getType() === "tel")
     {
       if (this.isRequired() === true)
