@@ -606,6 +606,29 @@ var Input = function(input_element_id)
       
       
       
+   if (tagname === "input" && this.getType() === "password")
+    {
+      if (this.isRequired() === true)
+      {
+        if (this.getValue())
+        {
+          valid = true;
+        }
+        else
+        {
+          valid = false;
+          this.setErrorMessage("No value provided for input element of ID: `" + this.getId()+ "`");
+          this.setUserFriendlyErrorMessage("Please complete this field.");
+        }
+      }
+      else
+      {
+        valid = true;
+      }  
+    }
+      
+      
+      
     if (tagname === "input" && this.getType() === "file")
     {  
         
