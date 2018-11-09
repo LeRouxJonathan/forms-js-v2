@@ -1128,6 +1128,7 @@ var Form = function(form_element_id)
       if (google_recaptcha_value.length === 0 || google_recaptcha_value === "undefined" || google_recaptcha_value === undefined)
       {
         valid = false;
+        return valid;
       }
     }
       
