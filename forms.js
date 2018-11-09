@@ -92,7 +92,6 @@ var Input = function(input_element_id)
   {
     var required = false; 
       
-      
     //Special handling is required for checkboxes and radios, as they are individual elements that can be bound together as a group via the "name" attribute. If one of the checkboxes or radios in the group is required, then the entire set of checkboxes or radios is shares that hard requirement.
     if (this.getTagName() === "input" && (this.getType() === "checkbox" || this.getType() === "radio"))
     {
@@ -158,9 +157,6 @@ var Input = function(input_element_id)
   //Strips all leading "." (dots) and reassembles an array of strings that dictate the file extensions accepted by this input.
   function standardizeAcceptedFileExtensionsArray(extensions_array)
   {
-    
-    //console.log("standardizeAcceptFiledExtensionsArray received:");
-    //console.log(extensions_array);
       
     //First, ensure that we strip out all leading "." in case the dev lists the extensions with preceeding dots. (i.e.: .txt, .xlsx, .ppt)
     var standardized_array = [];
@@ -236,17 +232,17 @@ var Input = function(input_element_id)
         extension_string = extension_string_pieces[extension_string_pieces.length - 1];
       }
     
-      //console.log('The standardized extension string is: ' + extension_string);  
+
     
       
       //Cycle through our accepted extensions and see if we have a match.
       for (var i = 0; i < accepted_file_extensions.length; i++)
       {
-        console.log("We are comparing " + extension_string.toString() + " to " + accepted_file_extensions[i].toString().trim().toLowerCase());  
+
           
         if (extension_string.toString() === accepted_file_extensions[i].toString().trim().toLowerCase())
         {
-          console.log("Match found!");
+
           is_accepted = true;
             
           
@@ -265,7 +261,7 @@ var Input = function(input_element_id)
       is_accepted = true;
     }
       
-    console.log("Is accepted? " + is_accepted);  
+
     return is_accepted;
       
   }
@@ -487,7 +483,7 @@ var Input = function(input_element_id)
       
     if (tagname === "input" && this.getType() === "number")
     {
-      console.log("Is this a not a number? " + isNaN(this.getValue()));    
+  
         
       if (this.isRequired() === true)
       {
@@ -641,14 +637,12 @@ var Input = function(input_element_id)
          {
            //Retrieve our desired file extensions, if any
            var accepted_extensions = this.getAcceptedFileExtensionsFromDataAttribute();
-           console.log("This file input's accepted extensions are: ");
-           console.log(accepted_extensions);
+
            if (accepted_extensions !== null && accepted_extensions.length > 0)
            {
              //Harvest the file extension from each of the given files.
              var attached_file_extensions = this.getStandardizedFileExtensionsFromAttachedFiles();
-             console.log("The file extensions that were detected as attached were: ");
-             console.log(attached_file_extensions);
+
                
              for (var i = 0; i < attached_file_extensions.length; i++)
              {
@@ -686,14 +680,12 @@ var Input = function(input_element_id)
         {
            //Retrieve our desired file extensions, if any
            var accepted_extensions = this.getAcceptedFileExtensionsFromDataAttribute();
-           console.log("This file input's accepted extensions are: ");
-           console.log(accepted_extensions);
+
            if (accepted_extensions !== null && accepted_extensions.length > 0)
            {
              //Harvest the file extension from each of the given files.
              var attached_file_extensions = this.getStandardizedFileExtensionsFromAttachedFiles();
-             console.log("The file extensions that were detected as attached were: ");
-             console.log(attached_file_extensions);
+
                
              for (var i = 0; i < attached_file_extensions.length; i++)
              {
@@ -742,7 +734,7 @@ var Input = function(input_element_id)
       {
         if (this.isCheckboxGroup() === true)
         {
-          //console.log("GROUP DETECTED: " + this.getName() + " for element of id " + this.getId());
+
           //Get each of the checkboxes with this name, if even a single one is checked -- given it's a group -- it's valid.
           var group_elements = document.getElementsByName(this.getName());
             
@@ -752,7 +744,7 @@ var Input = function(input_element_id)
           {
             if (group_elements[i].checked)
             {
-              console.log("Group of type " + this.getType() + " is valid!");
+
               singular_checkbox_from_checkbox_group_is_checked = true;
             }
             else if (i >= group_elements.length && singular_checkbox_from_checkbox_group_is_checked === false)
@@ -793,7 +785,7 @@ var Input = function(input_element_id)
       }
     }
       
-  //console.log("Tag of id " + this.getId() + "'s validity is " + valid);   
+   
   return valid;    
     
   }//end: isValid() method
@@ -906,6 +898,24 @@ var Form = function(form_element_id)
     return this.excluded_input_elements;  
   }
   
+  //Note: [11-08-2018] Added special handling for the detection of Google reCaptcha bot checkboxes
+  this.hasGoogleRecaptcha = function hasGoogleRecaptcha()
+  {
+    var has_google_recaptcha = false;
+      
+    if (this.getAsDOMElement().getElementsByClassName("g-recaptcha").length > 0)
+    {
+      has_google_recaptcha = true;
+    }
+      
+    return has_google_recaptcha;
+  }
+  
+  this.getGoogleRecaptchaValue = function getGoogleRecaptchaValue()
+  {
+    return this.getAsDOMElement().getElementsByClassName("g-recaptcha")[0].children[0].children[1].value;  
+  }
+  
   
   //Returns all <input> <textarea> and <select> items as an array of default HTMLCollections
   /*
@@ -922,10 +932,6 @@ var Form = function(form_element_id)
       html_collection.push(input_html_collection[i]);
     }
       
-    
-      
-    console.log(textarea_html_collection);
-    console.log(select_html_collection);
   }
   */
   
@@ -963,7 +969,7 @@ var Form = function(form_element_id)
     }
       
       
-    //console.log(html_collection);  
+  
       
     //Next, let's get our excluded elements (if there are any).
     var excluded_input_element_ids = this.getExcludedInputElements();
@@ -1026,7 +1032,7 @@ var Form = function(form_element_id)
       
     //Note: This only harvests the elements we have left unexcluded.
     var input_elements = this.getFieldsAsInputElements();
-    //console.log(input_elements);
+
     
     for (var i = 0; i < input_elements.length; i++)
     {   
@@ -1113,6 +1119,19 @@ var Form = function(form_element_id)
       
     var valid = true;
       
+      
+    //Note: [11-08-2018] Shortcircuit event | If the form has a Google recaptcha element, ensure it has a value.
+    if (this.hasGoogleRecaptcha() === true)
+    {
+      var google_recaptcha_value = this.getGoogleRecaptchaValue();
+        
+      if (google_recaptcha_value.length === 0 || google_recaptcha_value === "undefined" || google_recaptcha_value === undefined)
+      {
+        valid = false;
+      }
+    }
+      
+      
     var inputs = this.getFieldsAsInputElements();
       
     for (var i = 0; i < inputs.length; i++)
@@ -1131,7 +1150,6 @@ var Form = function(form_element_id)
   {
     var invalid_inputs = [];        
     var inputs = this.getFieldsAsInputElements();
-      
 
     for (var i = 0; i < inputs.length; i++)
     {
@@ -1143,11 +1161,5 @@ var Form = function(form_element_id)
       
     return invalid_inputs;
   }
-
   
-    
 }//end: Form class
-
-
-
-
