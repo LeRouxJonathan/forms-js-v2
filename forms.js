@@ -378,6 +378,7 @@ var Input = function(input_element_id)
       Singular: No value or checked validation is needed
   
   */
+  //Note: [11-11-2018]: Fatal error in logic. For SELECT tags, if no element is selected, it fails to fetch the .value of "undefined". We need to test to see if the element exists.
   this.isValid = function isValid()
   {
     
@@ -415,16 +416,26 @@ var Input = function(input_element_id)
       if (this.isRequired() === true)
       {
         var select_element = this.getAsDOMElement();
-        var select_element_value = select_element[select_element.selectedIndex].value;
           
-        if (select_element_value && select_element_value.toString().trim().length > 0)
+        if (typeof(select_element[select_element.selectedIndex]) !== undefined && typeof(select_element[select_element.selectedIndex]) !== "undefined")
         {
-          valid = true;
+          var select_element_value = select_element[select_element.selectedIndex].value;    
+            
+          if(select_element_value.toString().trim().length > 0)
+          {
+            valid = true;
+          }
+          else
+          {
+            valid = false;
+            this.setErrorMessage("No value value provided for select element of ID: `" + this.getId()+"`");
+            this.setUserFriendlyErrorMessage("Please select an option.");
+          }
         }
         else
         {
           valid = false;
-          this.setErrorMessage("No value provided for select element of ID: `" + this.getId()+"`");
+          this.setErrorMessage("No valid value provided for select element of ID: `" + this.getId()+"`");
           this.setUserFriendlyErrorMessage("Please select an option.");
         }
       }
